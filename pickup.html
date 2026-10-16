@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>取件查询 · 永光照相馆</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="chrome" data-page="pickup"></div>
+<div class="wrap">
+  <h2 class="page-title">取件查询</h2>
+  <p class="page-sub">输入照片袋上的四位编号</p>
+  <div class="pickup-box">
+    <input type="text" id="pickup-input" maxlength="4" placeholder="0000" inputmode="numeric">
+    <div><button class="btn" onclick="checkPickup()">查 询</button></div>
+    <div class="pickup-msg" id="pickup-msg"></div>
+    <div class="clue-strip">
+      不知道编号？编号是<b>四位</b>，散落在店里，需凑齐：<br>
+      · 前两位在<b>摄影器材</b>的保养记录里<br>
+      · 后两位在<b>价目表</b>的收据样张上<br>
+      · 顾客留言里，也有人提过（只说了尾号）
+    </div>
+  </div>
+</div>
+<div id="site-footer"></div>
+<script src="js/common.js"></script>
+<script>
+function checkPickup(){
+  var v=$('pickup-input').value.trim();
+  var msg=$('pickup-msg');
+  /* 取件码=0933。防 F12：不存完整码，只按前两位/后两位验证（09 / 33 分布店里两处）。 */
+  if(v.length===4 && v.slice(0,2)==='09' && v.slice(2)==='33'){
+    State.data.found=true; State.data.tokens.code=true; State.save();
+    msg.style.color='#9c1f1f';
+    msg.innerHTML='查询成功。照片袋0933：思粤 · 婚纱合影。<br>正在为您取出照片…';
+    setTimeout(function(){ go('found.html'); },1200);
+  } else {
+    State.data.pickupTries++; State.save();
+    msg.style.color='#9c1f1f';
+    msg.textContent='编号有误，没有对应的照片袋。（第'+State.data.pickupTries+'次）';
+    if(State.data.pickupTries>=3){
+      msg.innerHTML+='<br><span class="small muted">提示：前两位在器材保养记录（09▓▓），后两位在价目表收据（▓▓33），拼起来才是完整编号。</span>';
+    }
+  }
+}
+$('pickup-input').addEventListener('keydown',function(e){ if(e.key==='Enter') checkPickup(); });
+</script>
+</body>
+</html>

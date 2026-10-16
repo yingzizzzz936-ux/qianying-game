@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>永光照相馆 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="chrome" data-page="home"></div>
+<div class="wrap">
+  <div class="home-grid">
+    <div>
+      <div class="hero">
+        <img class="hero-img" src="assets/facade.jpg" alt="永光照相馆门面">
+        <div class="cap">照相馆门面 · 骑楼老街33号 · 1996年春</div>
+      </div>
+      <div style="margin-top:18px;">
+        <div class="side-card">
+          <h3>本店公告</h3>
+          <ul>
+            <li><span class="li-date">04-12</span>回南天到，店内抽湿机已开，请放心取件</li>
+            <li><span class="li-date">04-09</span>新到一批进口相纸，色彩更饱和</li>
+            <li><span class="li-date">04-05</span>关于部分顾客"照片未取"的再次提醒</li>
+            <li><span class="li-date">03-30</span>本店<b>老暗房</b>维修，暂停使用</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="side-card">
+        <h3>取件提示</h3>
+        <p class="small muted">您有多年前未取的照片吗？输入<b>照片袋编号</b>即可查询。</p>
+        <p style="margin-top:10px;"><a href="pickup.html">→ 前往取件查询</a></p>
+      </div>
+      <div class="side-card">
+        <h3>样片精选</h3>
+        <ul>
+          <li><a href="gallery.html">婚纱合影</a></li>
+          <li><a href="gallery.html">全家福</a></li>
+          <li><a href="gallery.html">个人写真</a></li>
+        </ul>
+      </div>
+      <div class="side-card">
+        <h3>老板的话</h3>
+        <p class="small">开照相馆三十年，我拍过城里几乎每一个人。<br>只有一张照片，我至今没敢洗出来。</p>
+        <p class="small" style="text-align:right;margin-top:8px;"><a href="about.html">—— 老陈师傅</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="site-footer"></div>
+<script src="js/common.js"></script>
+<script>
+/* 暗场入场：全屏黑，一句点题，随后才走进照相馆 */
+(function(){
+  var d=document.createElement('div');
+  d.className='door-in';
+  d.innerHTML='永光照相馆<br><span class="door-sub">1996年 · 回南天 · 潮湿 · 灯亮着</span>';
+  document.body.appendChild(d);
+  setTimeout(function(){ d.classList.add('fade'); },3000);
+  setTimeout(function(){ d.remove(); },4700);
+})();
+</script>
+</body>
+</html>

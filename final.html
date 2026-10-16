@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>暗房深处 · 永光照相馆</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="safelight"></div>
+<div class="final-stage">
+  <div class="final-photo" id="final-photo">
+    <img class="final-photo-img" src="assets/wedding.jpg" alt="正在显影的合影">
+  </div>
+  <div class="final-prompt" id="final-prompt">
+    红色灯下，那张合影正在显影。<br>照片里站着的人，是谁？
+  </div>
+  <div id="final-name-step">
+    <input type="text" class="final-input" id="final-name" placeholder="念出她的名字" maxlength="6">
+    <div style="text-align:center;"><button class="dr-btn" id="recognize-btn">认 出 她</button></div>
+  </div>
+  <div class="final-choices" id="final-choices" style="display:none;">
+    <button class="choice-big choice-over" id="choose-over">过 曝<br><span style="font-size:12px;letter-spacing:.1em;">放手，让她走</span></button>
+    <button class="choice-big choice-fix" id="choose-fix">定 影<br><span style="font-size:12px;letter-spacing:.1em;">把她留住</span></button>
+  </div>
+  <div style="margin-top:20px;"><button class="dr-btn" id="under-btn">无力显影，停下来</button></div>
+  <p style="margin-top:24px;"><a href="darkroom.html" style="color:#a8706a;">← 回到显影盘</a></p>
+</div>
+<script src="js/common.js"></script>
+<script>
+function recognizeHer(){
+  var name=$('final-name').value.trim();
+  if(name==='梁思粤'){
+    State.data.recognized=true; State.save();
+    $('final-photo').classList.add('clear');
+    if(State.data.collected.length>=6){
+      $('final-prompt').innerHTML='她的脸清晰了。<br>六个针尖字在你耳边回响：周梦回，放手吧。<br><br>你，要怎么做？';
+      $('final-name-step').style.display='none';
+      $('final-choices').style.display='flex';
+      $('under-btn').style.display='none';
+    } else {
+      $('final-prompt').innerHTML='你认出了她，可照片还差 '+(6-State.data.collected.length)+' 个字。<br>影像抓不住完整的轮廓，她又开始模糊。';
+      $('final-name-step').style.display='none';
+      $('under-btn').style.display='inline-block';
+      $('under-btn').textContent='无力显影，停下来（欠曝）';
+    }
+  } else {
+    State.data.nameTries++; State.save();
+    if(State.data.nameTries>=3){
+      /* 认错太多次：红灯熄了，黑屏警告 */
+      $('final-prompt').innerHTML='……灯，突然暗了。<br>你以为叫错了她的名字，其实是叫错了别的什么。';
+      var ov=document.createElement('div');
+      ov.className='forbidden-screen';
+      var t=document.createElement('div');
+      t.className='forbidden-text'; t.textContent='别一次一次地，叫她的名字。';
+      ov.appendChild(t); document.body.appendChild(ov);
+      requestAnimationFrame(function(){ ov.classList.add('show'); });
+      setTimeout(function(){ ov.classList.remove('show'); setTimeout(function(){ ov.remove(); },500); },3000);
+      State.data.nameTries=0; State.save();
+    } else {
+      toast('你念错了名字。红光里，她的身影又模糊了一分。');
+    }
+  }
+}
+function markEnd(k){
+  if(State.data.endings.indexOf(k)<0){ State.data.endings.push(k); State.save(); }
+}
+function whiteFlashThen(url){
+  var wf=document.createElement('div');
+  wf.style.cssText='position:fixed;inset:0;background:#fff;z-index:9999;opacity:0;pointer-events:none;transition:opacity 1.4s ease;';
+  document.body.appendChild(wf);
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ wf.style.opacity='1'; });
+  });
+  setTimeout(function(){ go(url); },2000);
+}
+/* 真相之锁：三样凭证缺一不可（照片袋编号 / 老陈工号 / 暗房手记印章） */
+function tokensAll(){
+  var t=State.data.tokens;
+  return t.code && t.work && t.seal;
+}
+function chooseOver(){
+  if(!State.data.recognized){ toast('你还没有认出光里的人。'); return; }
+  if(!State.data.chemDone){ toast('冲洗工序都没走对，照片根本不会显影——她如何显形？'); return; }
+  if(State.data.collected.length<6){ toast('底片没找齐，你无法让她真正显形、放手。'); return; }
+  if(!tokensAll()){ toast('……照片显影了，可她始终想不起你。你好像漏了一样凭证。'); return; }
+  markEnd('over');
+  whiteFlashThen('ending-over.html');
+}
+function chooseFix(){
+  if(!State.data.recognized){ toast('你得先看清她是谁。'); return; }
+  if(!State.data.chemDone){ toast('工序没走对，照片不会定影——你想留住的，是张虚影。'); return; }
+  if(State.data.collected.length<6){ toast('影像不完整，无法定影。'); return; }
+  if(!tokensAll()){ toast('……照片定住了，可她始终想不起你。缺一样凭证，她就缺一点记得。'); return; }
+  markEnd('fix');
+  go('ending-fix.html');
+}
+function chooseUnder(){
+  if(!State.data.recognized){ toast('你得先看清光里的人是谁。'); return; }
+  if(!State.data.sawNeg){
+    toast('你还不知道照片背面藏着什么，就这样放手，欠曝也欠得不明不白。先翻翻底片。');
+    return;
+  }
+  markEnd('under');
+  go('ending-under.html');
+}
+$('recognize-btn').addEventListener('click',recognizeHer);
+$('final-name').addEventListener('keydown',function(e){ if(e.key==='Enter') recognizeHer(); });
+$('choose-over').addEventListener('click',chooseOver);
+$('choose-fix').addEventListener('click',chooseFix);
+$('under-btn').addEventListener('click',chooseUnder);
+</script>
+</body>
+</html>

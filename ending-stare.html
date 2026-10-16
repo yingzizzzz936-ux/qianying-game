@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>对视 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="ending e-stare">
+  <div class="e-box">
+    <div class="e-title">对 视</div>
+    <div class="e-sub">黑暗里，你选择回看</div>
+    <div class="e-text">
+      <p>黑屏的提示已经走完。你本可以离开。</p>
+      <p>可你点了"回看"。</p>
+      <p>黑暗没有变化。你睁大眼睛，努力想看清楚——屏幕的深处，是不是真的有什么。</p>
+      <p>起初，什么都没有。然后，你看到黑暗里，缓缓地，浮现出一张脸。</p>
+      <p>它没有眼睛，只有两个浅浅的、凹陷的位置。可你能感觉到，它正透过那两个位置，死死地、一眨不眨地，看着你。</p>
+      <p>你想移开视线，却发现自己动不了。那张脸，一点点凑近。</p>
+      <p>你看见它的轮廓，越来越清晰——那张脸，最终和你一模一样。</p>
+      <p>不知是谁，在黑暗里，轻轻说了一句：</p>
+      <p>"现在，轮到你了。"</p>
+    </div>
+    <div class="e-word">视</div>
+    <div class="e-actions">
+      <button class="btn" onclick="replay()">重新来过</button>
+      <button class="btn btn-ghost" onclick="go('index.html')">回到前厅</button>
+    </div>
+  </div>
+</div>
+<script src="js/common.js"></script>
+<script>
+guardEnding('stare');
+function replay(){ State.reset(); go('index.html'); }
+</script>
+</body>
+</html>

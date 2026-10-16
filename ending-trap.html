@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>显影 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="ending e-trap">
+  <div class="e-box">
+    <div class="e-title">显 影</div>
+    <div class="e-sub">你点了那张脸</div>
+    <div class="e-text">
+      <p>你伸出手，指尖触到显影盘里那张苍白的脸。药液，比你想象的更冷。</p>
+      <p>只是一瞬间，红光暗了下去。你想后退，却发现自己的手、脚，正在一寸寸变得透明，像浸在水里的相纸。</p>
+      <p>你低头，看见自己的轮廓被缓缓地、不可逆地，印进了那张相纸。</p>
+      <p>……不知过了多久，有人在显影盘前停下。是一个陌生的、后来的客人。他拿起这张照片，对着灯看了看，皱起眉，对身边人说：</p>
+      <p>"奇怪，这张照片里，怎么多了一个人？"</p>
+      <p>你张了张嘴，想喊。可照片里的人，是没有声音的。</p>
+      <p>红色安全灯，永远亮着。你在显影盘里，被一次又一次地，洗出来。</p>
+    </div>
+    <div class="e-word">困</div>
+    <div class="e-actions">
+      <button class="btn" onclick="replay()">重新来过</button>
+      <button class="btn btn-ghost" onclick="go('index.html')">回到前厅</button>
+    </div>
+  </div>
+</div>
+<script src="js/common.js"></script>
+<script>
+guardEnding('trap');
+function replay(){ State.reset(); go('index.html'); }
+</script>
+</body>
+</html>

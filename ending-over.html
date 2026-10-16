@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>过曝 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="ending e-over">
+  <div class="e-box">
+    <div class="e-title">过 曝</div>
+    <div class="e-sub">你终于，认出了光里的人</div>
+    <div class="e-text">
+      <p>你念出"梁思粤"三个字的时候，照片里那个模糊的人影，慢慢清晰了。她没有看你，只是低着头，像等了很久。</p>
+      <p>"你想起来了。"她说，"那年回南天的火，你为了冲进暗房救我，没出来。是你，一直没走。"</p>
+      <p>"我守着暗房，把你显影了一次又一次，不是想留住你——是想让你自己想起来，然后，安心地走。"</p>
+      <p>你伸手，把那张合影从显影盘里拿起来，对着红色安全灯。你说："我该走了。"</p>
+      <p>你按下过曝。照片一寸寸变白，像天光一点点漫上来。她的身影融进白光里，最后说了一句："谢谢你，梦回。这一次，我会好好活着。"</p>
+      <p>天亮了。照相馆的门轻轻合上。她终于一个人，哭出了声。</p>
+    </div>
+    <div class="e-word">光</div>
+    <div class="e-actions">
+      <button class="btn" onclick="replay()">重新来过</button>
+      <button class="btn btn-ghost" onclick="go('index.html')">回到前厅</button>
+    </div>
+  </div>
+</div>
+<script src="js/common.js"></script>
+<script>
+guardEnding('over');
+function replay(){ State.reset(); go('index.html'); }
+</script>
+</body>
+</html>

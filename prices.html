@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>价目表 · 永光照相馆</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="chrome" data-page="prices"></div>
+<div class="wrap">
+  <h2 class="page-title">价目表</h2>
+  <p class="page-sub">明码标价 · 童叟无欺</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th style="width:30%;">服务项目</th><th style="width:20%;">规格</th><th style="width:20%;">价格</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>证件照 / 快照</td><td>一版8张</td><td>5元</td><td>立等可取</td></tr>
+      <tr><td>胶卷冲洗</td><td>135 / 120</td><td>8元/卷</td><td>含照片袋</td></tr>
+      <tr><td>个人写真</td><td>12张</td><td>38元</td><td>含样片</td></tr>
+      <tr><td>全家福 / 合影</td><td>10寸</td><td>45元</td><td>含底片</td></tr>
+      <tr><td>婚纱摄影</td><td>全套</td><td>288元</td><td>含订婚照、合影</td></tr>
+      <tr><td>底片加洗</td><td>每张</td><td>1元</td><td>需凭照片袋</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="clue-strip">
+    收据样张（柜台角落压着一张泛黄的取件收据）：<br>
+    「照片袋编号：<b id="receipt-no">▓▓33</b>　顾客：思粤　项目：婚纱合影　状态：<span id="unpaid-char">未取</span>」
+    <br><span class="small">收据被茶水洇湿了，<b>前两位</b>数字看不清——只认得尾号是33。</span>
+    <br><span class="small muted">（“未取”二字旁边，好像有个被针尖扎过的小字）</span>
+    <span class="prick" id="ch-放" title="·">放</span>
+  </div>
+  <div class="clue-strip" style="margin-top:16px;">
+    柜台抽屉里压着一张手写的《暗房操作规程》（字迹是老陈师傅的）：<br>
+    「进暗房，先亮安全灯。<br>
+    照片要显影，药液一道都不能省：<br>
+    先把底片泡进<b>显影液</b>（显影<b>3分钟</b>，到浓淡正好），等影像出来；<br>
+    一出来立刻过<b>停显液</b>，别让它黑过头；<br>
+    再进<b>定影液</b>定住；<br>
+    最后<b>水洗</b>干净，晾干。顺序错了，照片就废了。」
+    <br><span class="small muted">（落款：老陈 · 1992年）</span>
+  </div>
+</div>
+<div id="site-footer"></div>
+<script src="js/common.js"></script>
+<script>prick({id:'ch-放',ch:'放'});</script>
+</body>
+</html>

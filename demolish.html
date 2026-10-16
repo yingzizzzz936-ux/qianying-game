@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拆迁之后 · 永光照相馆</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="demolish">
+  <h2 style="color:#aaa;margin-bottom:8px;">拆迁之后</h2>
+  <p class="small" style="margin-bottom:26px;">骑楼老街33号 · 永光照相馆 · 已拆除</p>
+  <img class="demolish-img" src="assets/demolish.jpg" alt="拆迁后的照相馆">
+  <p class="small" style="margin-top:14px;color:#888;">这里曾挂着一张合影，如今只剩一面空墙</p>
+  <p class="small" style="margin-top:26px;max-width:420px;">
+    推土机推平了照相馆，只在废墟里找到一台海鸥4A相机和一沓底片。
+    照片里的人都走了，相纸泛黄，显影盘里的水滴滴答答。
+  </p>
+  <p class="small" style="margin-top:14px;color:#8a7c5c;" id="ruin-line">
+    废墟里还有一张合影，被压在最底下，勉强认得出来——<span class="prick" id="ch-ruin">你也，在里面。</span>
+  </p>
+  <div style="margin-top:24px;"><button class="btn" onclick="toEmpty()" id="empty-btn">合上最后一叠底片</button></div>
+  <p style="margin-top:22px;"><a href="about.html" style="color:#888;">← 返回</a></p>
+</div>
+<script src="js/common.js"></script>
+<script>
+/* 读到废墟真相，才能合上底片 */
+prick({id:'ch-ruin'});
+document.getElementById('ch-ruin').addEventListener('click',function(){
+  State.data.emptySeen=true; State.save();
+  toast('废墟里那张合影，右下角有一枚你——你没有走出来。');
+});
+function toEmpty(){
+  if(!State.data.found){
+    toast('你连那卷照片都还没取到，就这样告别一店的照片？');
+    return;
+  }
+  if(!State.data.emptySeen){
+    toast('合上前，先看看废墟里那张被压住的合影——它也是这店的最后一张照片。');
+    return;
+  }
+  if(State.data.endings.indexOf('empty')<0){ State.data.endings.push('empty'); State.save(); }
+  go('ending-empty.html');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>摄影器材 · 永光照相馆</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="chrome" data-page="equipment"></div>
+<div class="wrap">
+  <h2 class="page-title">摄影器材</h2>
+  <p class="page-sub">老伙计们 · 陪伴照相馆多年</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th style="width:30%;">器材</th><th style="width:20%;">型号</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>135单反相机</td><td>DF-1</td><td>主力机型，快门清脆</td></tr>
+      <tr><td>120双反相机</td><td>4A系列</td><td>海鸥4A · 编号 <b id="sea-num">09▓▓</b><span class="prick" id="ch-回" title="·">回</span></td></tr>
+      <tr><td>放大机</td><td>斜桥式</td><td>暗房核心设备</td></tr>
+      <tr><td>快门 / 光圈</td><td>—</td><td>控制曝光的两兄弟</td></tr>
+      <tr><td>显影盘 / 显影液</td><td>—</td><td>照片在盘中慢慢浮现</td></tr>
+      <tr><td>暗房药液</td><td>四瓶</td><td>标签被药液浸得发花，勉强认得出几瓶的名字：<b>停显液</b> · <b>水洗槽</b> · <b>显影液（D-76）</b> · <b>定影液（海波）</b><br><span class="small muted">哪瓶先用、哪瓶后用，师傅从不外说。</span></td></tr>
+      <tr><td>暗房温度计</td><td>水银式</td><td>回南天湿气重，药液温度浮动大。<b>老陈只认一个数：20。</b><span class="small muted">低了显不出，高了发灰、显过头。</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin-top:16px;color:#8a7c5c;">小提示：旧器材的保养记录里，偶尔会记着一些<b>不对外的事</b>。</p>
+  <p class="small muted" style="margin-top:10px;cursor:pointer;" id="equip-lock" onclick="tryDarkEntry()">老暗房正在维修，非工作人员请勿入内。…</p>
+</div>
+<div id="site-footer"></div>
+<script src="js/common.js"></script>
+<script>
+prick({id:'ch-回',ch:'回'});
+function tryDarkEntry(){
+  if(!State.data.found){
+    toast('门缝里漏出红光，可这扇门不在这。先去取件查询——照片袋编号，前两位在器材保养记录里，后两位在价目表收据上。');
+    $('equip-lock').innerHTML='你伸手推了推，门纹丝不动。暗房真正的门，不在这面墙上。';
+  } else {
+    toast('器材间只有一排冷柜和药液。暗房的门，藏在样片墙那张多出来的人的合影背后。');
+  }
+}
+</script>
+</body>
+</html>

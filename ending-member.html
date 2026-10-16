@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>归队 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="ending e-member">
+  <div class="e-box">
+    <div class="e-title">归 队</div>
+    <div class="e-sub">最后一排，空着一个位置</div>
+    <div class="e-text">
+      <p>你望着那张黑压压的合影。最后一排，确实空着一个位置——不大不小，恰好站得下一个人。</p>
+      <p>你不知道自己为什么会走过去。脚步没有停。</p>
+      <p>你站到最后一排，站在那些沉默的、看不清脸的人中间。你想学着他们的样子，直视前方。</p>
+      <p>"咔嚓。"快门响了。你从没想过，快门声会这么响，这么沉。</p>
+      <p>你想退出去，却发现自己的脚再也动不了。你低头，看不见自己的手——它们垂在身侧，和照片里所有人一样，僵硬，安静。</p>
+      <p>从那以后，城里每次拍大合影，洗出来的最后一排，都会多出一个人。</p>
+      <p>有人说，那个多出来的人，眉眼间，像一个1996年就该消失的年轻人。</p>
+    </div>
+    <div class="e-word">众</div>
+    <div class="e-actions">
+      <button class="btn" onclick="replay()">重新来过</button>
+      <button class="btn btn-ghost" onclick="go('index.html')">回到前厅</button>
+    </div>
+  </div>
+</div>
+<script src="js/common.js"></script>
+<script>
+guardEnding('member');
+function replay(){ State.reset(); go('index.html'); }
+</script>
+</body>
+</html>

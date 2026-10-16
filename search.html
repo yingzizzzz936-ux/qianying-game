@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>站内搜索 · 永光照相馆</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="chrome" data-page="search"></div>
+<div class="wrap">
+  <h2 class="page-title">站内搜索</h2>
+  <p class="page-sub">翻翻本店的旧档案 · 试试关键词</p>
+  <div class="searchbar">
+    <input type="text" id="search-input" placeholder="输入关键词">
+    <button onclick="doSearch()">搜 索</button>
+  </div>
+  <div class="search-result" id="search-result"></div>
+</div>
+<div id="site-footer"></div>
+<script src="js/common.js"></script>
+<script>
+function doSearch(){
+  var raw=$('search-input').value.trim();
+  var box=$('search-result');
+  if(!raw){ box.innerHTML='<div class="sr-none">请输入关键词。</div>'; return; }
+  var key=raw, html='';
+  if(key==='周梦回' && !State.data.found){
+    html='<div class="sr-item"><div class="sr-type">柜台查询</div><h4>查无此卷</h4>1996年的顾客名册里，没有"周梦回"。<br><span class="small muted">奇怪——你明明，就是周梦回。</span></div>';
+  } else if(SEARCH[key]){
+    var arr=SEARCH[key];
+    for(var i=0;i<arr.length;i++){
+      html+='<div class="sr-item sr-fold"><div class="sr-head" onclick="toggleSr(this)">'
+        +'<span class="sr-arrow">▸</span><div class="sr-type">'+arr[i].type+'</div>'
+        +'<h4>'+arr[i].title+'</h4></div>'
+        +'<div class="sr-body">'+arr[i].body+'</div></div>';
+    }
+    if(markGate(key)){
+      html+='<div class="gate-whisper">……你，也看见了。</div>';
+    }
+  } else if(FAKE.indexOf(key)>=0){
+    html='<div class="sr-none">1996年的永光照相馆，暂无"'+esc(key)+'"这项服务。</div>';
+  } else {
+    html='<div class="sr-none">查无此卷。档案里没有与"'+esc(key)+'"相关的记录。</div>';
+  }
+  box.innerHTML=html;
+  if(key==='它'||key==='它们'){ prick({id:'ch-手',ch:'手'}); }
+}
+function toggleSr(head){
+  var item=head.parentNode;
+  var open=item.classList.toggle('open');
+  var arr=head.querySelector('.sr-arrow');
+  if(arr) arr.textContent=open?'▾':'▸';
+}
+$('search-input').addEventListener('keydown',function(e){ if(e.key==='Enter') doSearch(); });
+</script>
+</body>
+</html>

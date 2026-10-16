@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>循环 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="ending e-loop">
+  <div class="e-box">
+    <div class="e-title">循 环</div>
+    <div class="e-sub">你夹出了那张没编号的底片</div>
+    <div class="e-text">
+      <p>底片册最底下，果然夹着一张没有编号的底片。你说不清它为什么会在那里。</p>
+      <p>你把它浸入显影液。影像慢慢浮现——是一张陌生的、又有几分熟悉的脸。</p>
+      <p>你想换下一张，可你翻到下一页，底片册里，还有一张。再下一页，还有。</p>
+      <p>你开始显影。第七张、第八张、第九张……你数到一百，又数到一千。底片册，永远翻不到最后一页。</p>
+      <p>红色安全灯，一直亮着。你不知道自己在这里显影了多久。</p>
+      <p>直到有一次，你低头看向显影盘——那张正在浮现的脸，是你自己。</p>
+      <p>你猛地惊醒，手却还机械地，夹起下一张底片。</p>
+      <p>又一张，你的脸。又一张。</p>
+    </div>
+    <div class="e-word">环</div>
+    <div class="e-actions">
+      <button class="btn" onclick="replay()">重新来过</button>
+      <button class="btn btn-ghost" onclick="go('index.html')">回到前厅</button>
+    </div>
+  </div>
+</div>
+<script src="js/common.js"></script>
+<script>
+guardEnding('loop');
+function replay(){ State.reset(); go('index.html'); }
+</script>
+</body>
+</html>

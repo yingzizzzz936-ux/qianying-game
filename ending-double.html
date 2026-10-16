@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>重曝 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="ending e-double">
+  <div class="e-box">
+    <div class="e-title">重 曝</div>
+    <div class="e-sub">两张底片，叠成了同一个梦</div>
+    <div class="e-text">
+      <p>你把合影和她的单人照，一起放进了放大机。这是摄影师从不轻易做的事——双重曝光。</p>
+      <p>红光下，两张底片的影子慢慢叠在一起。你看见照片里的自己，和她的身影，一寸寸重合。</p>
+      <p>"你这是……"她愣住了，随即明白过来，眼眶泛红，"你明知这样，我们都回不到现实里了。"</p>
+      <p>你没有说话。在显影的最后一刻，你握住了她的手——隔着照片，却异常清晰。</p>
+      <p>外面的世界照相馆拆了，火也灭了。可在这张叠成的照片里，骑楼老街永远停在1996年的春天，回南天的潮湿里，有两个人，再也没有分开。</p>
+      <p>这是执念，还是圆满，没有人说得清。</p>
+    </div>
+    <div class="e-word">重 逢</div>
+    <div class="e-actions">
+      <button class="btn" onclick="replay()">重新来过</button>
+      <button class="btn btn-ghost" onclick="go('index.html')">回到前厅</button>
+    </div>
+  </div>
+</div>
+<script src="js/common.js"></script>
+<script>
+guardEnding('double');
+function replay(){ State.reset(); go('index.html'); }
+</script>
+</body>
+</html>

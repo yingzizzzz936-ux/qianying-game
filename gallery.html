@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>样片墙 · 永光照相馆</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="chrome" data-page="gallery"></div>
+<div class="wrap">
+  <h2 class="page-title">样片墙</h2>
+  <p class="page-sub">以下均为顾客同意展示的样片 · 若看到熟悉的脸，纯属缘分</p>
+  <div class="photo-grid">
+    <!-- 正常样片 -->
+    <div class="photo-frame" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/studio.jpg" alt="摄影棚">
+      <div class="tag">摄 影 棚</div>
+    </div>
+    <div class="photo-frame" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/family.jpg" alt="全家福">
+      <div class="tag">全 家 福</div>
+    </div>
+    <div class="photo-frame odd" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/wedding.jpg" alt="婚纱合影">
+      <div class="tag">婚 纱 · 合 影</div>
+    </div>
+    <div class="photo-frame" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/street.jpg" alt="街拍">
+      <div class="tag">街 拍</div>
+    </div>
+    <div class="photo-frame odd" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/portrait.jpg" alt="个人写真">
+      <div class="tag">个 人 写 真</div>
+    </div>
+    <div class="photo-frame" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/graduation.jpg" alt="毕业合影">
+      <div class="tag">毕 业 合 影</div>
+    </div>
+    <!-- 恐怖样片（看起来正常，内容诡异） -->
+    <div class="photo-frame" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/empty-studio.jpg" alt="空摄影棚">
+      <div class="tag">未使用的摄影棚</div>
+    </div>
+    <div class="photo-frame odd" data-ghost="1" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/ghost-family.jpg" alt="合影">
+      <div class="tag">合 影（补拍）</div>
+    </div>
+    <div class="photo-frame" data-stare="1" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/wrong-portrait.jpg" alt="补拍的写真">
+      <div class="tag">补 拍 的 写 真</div>
+    </div>
+    <div class="photo-frame odd" data-stare="1" data-join="1" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/all-stare.jpg" alt="单位合影">
+      <div class="tag">单 位 合 影</div>
+    </div>
+    <div class="photo-frame" data-stare="1" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/behind-glass.jpg" alt="闭店前">
+      <div class="tag">闭 店 前</div>
+    </div>
+    <div class="photo-frame odd" onclick="openPhoto(this)">
+      <img class="sample-img" src="assets/damaged-face.jpg" alt="受潮的照片">
+      <div class="tag">受 潮 的 照 片</div>
+    </div>
+    <!-- 损坏照片（取到照片后解锁） -->
+    <div class="photo-frame" data-kind="damaged" onclick="openPhoto(this)">
+      <div class="sample-img damaged-box"><span class="damaged-mark">底片损坏</span></div>
+      <img class="hidden-asset" src="assets/face-tray.jpg" alt="损坏的底片">
+      <div class="tag">损 坏 的 底 片</div>
+    </div>
+    <!-- 黑屏禁忌照片（有标题，点击黑屏） -->
+    <div class="photo-frame odd" data-kind="forbidden" onclick="openPhoto(this)">
+      <div class="sample-img forbidden-box"><span class="forbidden-mark">无 题</span></div>
+      <div class="tag">无 题</div>
+    </div>
+    <div class="photo-frame" data-kind="forbidden" onclick="openPhoto(this)">
+      <div class="sample-img forbidden-box"><span class="forbidden-mark">未编号</span></div>
+      <div class="tag">未 编 号 的 照 片</div>
+    </div>
+  </div>
+  <p class="small muted" style="margin-top:20px;">注：若您发现某张照片角落多了一个<b>不该在的人</b>，请不要声张，到留言板悄悄告诉我们。</p>
+</div>
+<div id="site-footer"></div>
+<script src="js/common.js"></script>
+<script>
+var FORBIDDEN_TEXTS=[
+  "这张照片，你不该看。",
+  "……它在看你。",
+  "快门按下的瞬间，你也在里面。",
+  "那年，照相馆洗出了不该洗的东西。",
+  "别回头，它就在你身后。",
+  "照片里的人，都还没走。",
+  "你已经，被拍进去了。",
+  "显影液里，多了一张脸。",
+  "数清楚了吗？照片里比你看到的，多一个。",
+  "……对不起。"
+];
+function openPhoto(frame){
+  var kind=frame.getAttribute('data-kind')||'view';
+  if(kind==='forbidden'){ showForbidden(frame); }
+  else if(kind==='damaged'){ openDamaged(frame); }
+  else if(frame.getAttribute('data-ghost') && State.data.found){
+    /* 取到照片后，这张合影背后才是暗房门——但门锁着，要先拿到钥匙 */
+    if(!State.data.keyOpen){ showKeyLock(); }
+    else { go('darkroom.html'); }
+  }
+  else { viewSample(frame); }
+}
+/* 暗房门：钥匙锁（老陈的钥匙，工号=开张年份 1966） */
+function showKeyLock(){
+  if(document.getElementById('key-lock')) return;
+  var ov=document.createElement('div');
+  ov.className='key-lock'; ov.id='key-lock';
+  ov.innerHTML='<div class="key-box">'
+    +'<p class="key-title">门，是锁着的。</p>'
+    +'<p class="key-sub">合影背后露出半扇门。要进去，得先找到老陈那把钥匙。<br>钥匙柄上，刻着四个数字。</p>'
+    +'<input type="text" id="key-input" maxlength="4" placeholder="钥匙……">'
+    +'<button class="key-submit" onclick="tryKey()">转 动 钥 匙</button>'
+    +'<p class="small muted" style="margin-top:14px;">老陈从不把钥匙借人。可那串数字，好像藏在哪里。</p>'
+    +'</div>';
+  document.body.appendChild(ov);
+  requestAnimationFrame(function(){ ov.classList.add('show'); });
+  var inp=$('key-input');
+  inp.focus();
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter') tryKey(); });
+  ov.addEventListener('click',function(e){ if(e.target===ov) closeKeyLock(); });
+}
+function closeKeyLock(){
+  var ov=document.getElementById('key-lock');
+  if(!ov) return;
+  ov.classList.remove('show'); setTimeout(function(){ ov.remove(); },400);
+}
+function tryKey(){
+  var v=$('key-input').value.trim();
+  /* 钥匙=1966（老陈工号=开张年份）。防 F12：只按前后两段验证，不存完整码。 */
+  if(v.length===4 && v.slice(0,2)===KEYP1 && v.slice(2)===KEYP2){
+    State.data.keyOpen=true; State.data.tokens.work=true; State.save();
+    closeKeyLock();
+    toast('钥匙转动的刹那，锁咔哒一声开了。');
+    go('darkroom.html');
+    return;
+  }
+  State.data.keyTries++; State.save();
+  if(State.data.keyTries>=3){
+    /* 错太多次：红光猛闪 + 黑屏警告 */
+    document.body.classList.add('safelight-flicker');
+    setTimeout(function(){ document.body.classList.remove('safelight-flicker'); },1200);
+    closeKeyLock();
+    var ov=document.createElement('div');
+    ov.className='forbidden-screen';
+    var t=document.createElement('div');
+    t.className='forbidden-text'; t.textContent='门，不是这样开的。';
+    ov.appendChild(t); document.body.appendChild(ov);
+    requestAnimationFrame(function(){ ov.classList.add('show'); });
+    setTimeout(function(){ ov.classList.remove('show'); setTimeout(function(){ ov.remove(); },500); },3000);
+    State.data.keyTries=0; State.save();
+  } else {
+    toast('咔哒——不对。这把钥匙转不动。');
+    $('key-input').value='';
+    $('key-input').focus();
+  }
+}
+/* 正常 / 恐怖照片：灯箱 */
+function viewSample(frame){
+  var img=frame.querySelector('img.sample-img');
+  var cap=frame.querySelector('.tag').textContent;
+  var src=img?img.src:'';
+  var overlay=document.createElement('div');
+  overlay.className='lb-overlay';
+  var box=document.createElement('div');
+  box.className='lb-box';
+  var bigImg=document.createElement('img');
+  bigImg.className='lb-photo';
+  bigImg.src=src; bigImg.alt=cap;
+  box.appendChild(bigImg);
+  var capEl=document.createElement('div');
+  capEl.className='lb-cap'; capEl.textContent=cap;
+  box.appendChild(capEl);
+  /* 鬼影照片：停留后黑影动一下 + 文字 */
+  if(frame.getAttribute('data-ghost')){
+    var ghost=document.createElement('div');
+    ghost.className='lb-ghost-text';
+    ghost.textContent='……它在看你';
+    box.appendChild(ghost);
+    setTimeout(function(){ ghost.classList.add('show'); },2600);
+    /* 暗房的真正入口：藏在这张合影背后（取到照片后，门缝才漏出红光） */
+    if(State.data.found){
+      box.style.position='relative';
+      var door=document.createElement('div');
+      door.className='hidden-door';
+      door.innerHTML='<span class="door-glow"></span><span class="door-hint">门缝里，漏出红光……</span>';
+      box.appendChild(door);
+      door.addEventListener('click',function(e){
+        e.stopPropagation();
+        toast('门，吱呀一声开了。');
+        go('darkroom.html');
+      });
+    }
+  }
+  /* 凝视照片：停留后照片缓慢靠近 + 文字 */
+  if(frame.getAttribute('data-stare')){
+    bigImg.classList.add('stare-zoom');
+    var st=document.createElement('div');
+    st.className='lb-ghost-text';
+    st.textContent='……别盯着看';
+    box.appendChild(st);
+    setTimeout(function(){ st.classList.add('show'); },2400);
+  }
+  /* 全员凝视：读过手记后，最后一排才空出位置，可"站过去" */
+  if(frame.getAttribute('data-join') && State.data.gates.member){
+    var join=document.createElement('div');
+    join.className='lb-join';
+    join.innerHTML='<div class="lb-join-text">最后一排，空着一个位置。</div>'+
+      '<button class="lb-join-btn">站 过 去</button>';
+    box.appendChild(join);
+    setTimeout(function(){ join.classList.add('show'); },4200);
+    join.querySelector('.lb-join-btn').addEventListener('click',function(e){
+      e.stopPropagation();
+      if(State.data.endings.indexOf('member')<0){ State.data.endings.push('member'); State.save(); }
+      go('ending-member.html');
+    });
+  }
+  var tip=document.createElement('div');
+  tip.className='small';
+  tip.style.cssText='text-align:center;color:#8a7a60;margin-top:10px;';
+  tip.textContent='点击任意处关闭';
+  box.appendChild(tip);
+  overlay.appendChild(box);
+  overlay.addEventListener('click',function(){ overlay.remove(); });
+  document.body.appendChild(overlay);
+  /* 全家福：右下角藏一枚针尖字（hover 才微现） */
+  if(/family\.jpg/.test(src)){
+    var pk=document.createElement('span');
+    pk.className='prick'; pk.id='ch-周'; pk.textContent='周'; pk.title='·';
+    box.appendChild(pk);
+    prick({id:'ch-周',ch:'周'});
+  }
+}
+/* 损坏照片：取到照片后才解锁 */
+function openDamaged(frame){
+  var hidden=frame.querySelector('.hidden-asset');
+  var unlock=hidden?hidden.src:'';
+  if(!State.data.found){
+    toast('底片受潮损坏，黑乎乎的，什么也看不清。');
+    return;
+  }
+  var cap=frame.querySelector('.tag').textContent;
+  var overlay=document.createElement('div');
+  overlay.className='lb-overlay';
+  var box=document.createElement('div');
+  box.className='lb-box';
+  var bigImg=document.createElement('img');
+  bigImg.className='lb-photo'; bigImg.src=unlock; bigImg.alt=cap;
+  box.appendChild(bigImg);
+  var capEl=document.createElement('div');
+  capEl.className='lb-cap'; capEl.textContent=cap;
+  box.appendChild(capEl);
+  var tip=document.createElement('div');
+  tip.className='small';
+  tip.style.cssText='text-align:center;color:#8a7a60;margin-top:10px;';
+  tip.textContent='点击任意处关闭';
+  box.appendChild(tip);
+  overlay.appendChild(box);
+  overlay.addEventListener('click',function(){ overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+/* 黑屏禁忌照片：全屏黑 + 随机文字逐字浮现 */
+function showForbidden(frame){
+  var title=frame.querySelector('.tag').textContent;
+  var text=FORBIDDEN_TEXTS[Math.floor(Math.random()*FORBIDDEN_TEXTS.length)];
+  var ov=document.createElement('div');
+  ov.className='forbidden-screen';
+  var t=document.createElement('div');
+  t.className='forbidden-text';
+  ov.appendChild(t);
+  var actions=document.createElement('div');
+  actions.className='forbidden-actions';
+  var back=document.createElement('div');
+  back.className='forbidden-back';
+  var lookBack=document.createElement('div');
+  lookBack.className='forbidden-back';
+  actions.appendChild(back);
+  actions.appendChild(lookBack);
+  ov.appendChild(actions);
+  document.body.appendChild(ov);
+  requestAnimationFrame(function(){ ov.classList.add('show'); });
+  var i=0;
+  setTimeout(function(){
+    var iv=setInterval(function(){
+      if(i<text.length){ t.textContent+=text[i]; i++; }
+      else {
+        clearInterval(iv);
+        back.textContent='离 开';
+        back.classList.add('show');
+        /* 读过手记后，"回看"才会主动浮现（它知道你知道了） */
+        if(State.data.gates.stare){
+          lookBack.textContent='回 看';
+          lookBack.classList.add('show');
+        }
+      }
+    },130);
+  },600);
+  back.addEventListener('click',function(){
+    ov.classList.remove('show');
+    setTimeout(function(){ ov.remove(); },500);
+  });
+  lookBack.addEventListener('click',function(){
+    if(State.data.endings.indexOf('stare')<0){ State.data.endings.push('stare'); State.save(); }
+    go('ending-stare.html');
+  });
+}
+/* 重访随机变化：照片墙偶尔"不对劲" */
+(function(){
+  var frames=document.querySelectorAll('.photo-frame');
+  setTimeout(function(){
+    var r=Math.random();
+    if(r<0.4){
+      var f=frames[Math.floor(Math.random()*frames.length)];
+      f.classList.add('flicker');
+      setTimeout(function(){ f.classList.remove('flicker'); },1400);
+    } else if(r<0.6){
+      var g=document.querySelector('.photo-frame[data-ghost]');
+      if(g){ g.classList.add('ghost-shift'); setTimeout(function(){ g.classList.remove('ghost-shift'); },800); }
+    }
+  },2200+Math.random()*2000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欠曝 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="ending e-under">
+  <div class="e-box">
+    <div class="e-title">欠 曝</div>
+    <div class="e-sub">照片，永远停在了最模糊的时候</div>
+    <div class="e-text">
+      <p>你没有找齐所有底片，也没有想起真相。显影盘里的照片，永远停在将显未显的那一瞬。</p>
+      <p>红色灯下，你看不清她的脸，也听不清她在说什么。你只是觉得很累，很想就这样停下来。</p>
+      <p>暗房的门没有关，可你也没有走出去。她的身影在模糊的照片里，静静地等着你，等下一次显影。</p>
+      <p>很多年以后，回南天再来的时候，暗房的红灯又会亮起，显影盘里的水重新翻动——一切，再从头开始。</p>
+      <p>你以为故事结束了。其实，你只是睡着了。</p>
+    </div>
+    <div class="e-word">遗 憾</div>
+    <div class="e-actions">
+      <button class="btn" onclick="replay()">重新来过</button>
+      <button class="btn btn-ghost" onclick="go('index.html')">回到前厅</button>
+    </div>
+  </div>
+</div>
+<script src="js/common.js"></script>
+<script>
+guardEnding('under');
+function replay(){ State.reset(); go('index.html'); }
+</script>
+</body>
+</html>

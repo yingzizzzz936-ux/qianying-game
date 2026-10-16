@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>老暗房 · 永光照相馆</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="safelight"></div>
+<div class="dr-wrap">
+  <img class="dr-hero" src="assets/darkroom.jpg" alt="暗房">
+  <h2 class="dr-title">老 暗 房</h2>
+  <p class="dr-sub">红色安全灯亮着 · 显影盘里，照片正在慢慢浮现</p>
+  <div class="dr-progress" id="dr-progress">已显影 0 / 6 张底片</div>
+
+  <!-- 冲洗工序：真实暗房流程 显影→停显→定影→水洗 -->
+  <div class="tray chem-tray">
+    <div class="tray-label">
+      <span>冲洗工序 · 药液齐了，先后却大有讲究</span>
+      <span class="small" style="color:#6a5a48;">显影、停显、定影、水洗——错一步，前功尽弃</span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+      <button class="dr-btn" data-chem="显影液">显影液</button>
+      <button class="dr-btn" data-chem="停显液">停显液</button>
+      <button class="dr-btn" data-chem="定影液">定影液</button>
+      <button class="dr-btn" data-chem="水洗">水洗</button>
+    </div>
+    <div class="chem-status" id="chem-status" style="color:#8a7a60;margin-top:12px;line-height:1.8;"></div>
+  </div>
+
+  <div class="tray">
+    <div class="tray-label">
+      <span>显影盘 ① · 等待显影</span>
+      <button class="dr-btn" id="dev-btn">浸入显影液</button>
+      <div class="param-tray" id="param-tray">
+        <span class="param-label">显影参数 · 药液温度 / 显影时间</span>
+        <div class="param-row">
+          <label>温度
+            <select id="param-temp">
+              <option value="16" selected>16℃</option>
+              <option value="18">18℃</option>
+              <option value="20">20℃</option>
+              <option value="22">22℃</option>
+              <option value="24">24℃</option>
+            </select>
+          </label>
+          <label>时间
+            <select id="param-min">
+              <option value="1" selected>1分钟</option>
+              <option value="2">2分钟</option>
+              <option value="3">3分钟</option>
+              <option value="4">4分钟</option>
+              <option value="5">5分钟</option>
+            </select>
+          </label>
+        </div>
+        <span class="small muted" style="display:block;color:#6a5a48;margin-top:8px;">回南天药液温度浮动大。调不对，照片不是显不出来，就是显过头。</span>
+      </div>
+    </div>
+    <div class="tray-stage">
+      <div class="negative" id="negative">
+        <div class="neg-img" id="neg-img"></div>
+        <div class="needle-word" id="needle-word"></div>
+      </div>
+      <img class="tray-face" id="tray-face" src="assets/face-tray.jpg" alt="显影盘">
+    </div>
+    <div class="tray-hint" id="tray-hint">……那张脸，在看你。</div>
+  </div>
+
+  <div class="tray">
+    <div class="tray-label">
+      <span>底片册 · 可翻动 / 叠加</span>
+      <span class="small" style="color:#6a5a48;">共6张底片</span>
+    </div>
+    <div class="small" style="color:#8a7a60;line-height:2;">
+      · 照片在显影液里会慢慢显现，急不得。<br>
+      · 每张底片翻到背面，针尖刻着一个字——连起来，是思粤想对你说的话。<br>
+      · 若你想把两张底片<b>叠进同一台放大机</b>……（慎重，那叫"重曝"）
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="dr-btn" id="double-btn">把合影与单人照叠放（重曝）</button>
+      <button class="dr-btn" id="to-final-btn">走向暗房深处</button>
+    </div>
+    <div class="extra-neg" id="extra-neg">
+      <button class="dr-btn" id="extra-neg-btn">底片册里，还夹着一张没编号的底片……</button>
+    </div>
+    <div class="seal-token" id="seal-token" onclick="getSeal()">◎ 手记扉页，压着一枚褪色的私章</div>
+  </div>
+
+  <p class="small" style="color:#6a5a48;text-align:center;margin-top:24px;">
+    <a href="index.html" style="color:#a8706a;">← 回到明亮的前厅</a>
+  </p>
+</div>
+<script src="js/common.js"></script>
+<script>
+function setupNeg(){
+  var s=State.data;
+  var btn=$('dev-btn');
+  $('negative').classList.remove('developed');
+  $('needle-word').textContent='';
+  if(s.devIndex>=6){
+    btn.textContent='六张底片已全部显影';
+    btn.disabled=true;
+  } else {
+    $('neg-img').style.background=NEG_BGS[s.devIndex];
+    btn.textContent='浸入显影液';
+    /* 首访提示：先到店里各处找齐六枚针尖字 */
+    if(s.collected.length===0){
+      toast('显影盘是空的。字不在这——它们被针尖刻在了店里六处地方。');
+    }
+  }
+  renderChem();
+  updateProgress();
+}
+/* ===== 冲洗工序（真实暗房流程：显影→停显→定影→水洗） ===== */
+var CHEM_ORDER=['显影液','停显液','定影液','水洗'];
+var CHEM_TIPS={'显影液':'潜影在显影液里，慢慢浮现……','停显液':'影像是浓是淡，就卡在这一停。','定影液':'影像，定住了。','水洗':'残留的药液被冲干净。照片能长久地留下来了。'};
+function renderChem(){
+  var s=State.data, st=$('chem-status'), btn=$('dev-btn');
+  if(s.chemDone){
+    st.textContent='工序完成——显影盘活了。可以开始显影底片了。';
+    if(s.devIndex<6) btn.disabled=false;
+    return;
+  }
+  var next=CHEM_ORDER[s.chem.length];
+  st.textContent = s.chem.length
+    ? '已过：'+s.chem.join(' · ')+'；下一步，是'+next+'。'
+    : '第一步，从'+next+'开始。四道工序，一道都不能省。';
+  btn.disabled=true;
+}
+function chemStep(name){
+  var s=State.data;
+  if(s.chemDone) return;
+  var expect=CHEM_ORDER[s.chem.length];
+  if(name===expect){
+    s.chem.push(name);
+    if(s.chem.length===4){ s.chemDone=true; }
+    State.save(); renderChem();
+    toast(CHEM_TIPS[name]);
+  } else {
+    /* 工序错：红光猛闪（沉浸+难度） */
+    document.body.classList.add('safelight-flicker');
+    setTimeout(function(){ document.body.classList.remove('safelight-flicker'); },1200);
+    toast('……药液不对。这一步该过'+expect+'，不是'+name+'。错一步，前功尽弃。');
+  }
+}
+function developNext(){
+  var s=State.data;
+  var btn=$('dev-btn');
+  if(s.devIndex>=6){ return; }
+  if(!s.chemDone){
+    toast('冲洗工序还没走完——显影液都没泡，照片不会显影。');
+    return;
+  }
+  /* 显影参数：药液温度20℃、显影3分钟（防 F12，不存答案，只读旋钮） */
+  var temp=parseInt($('param-temp').value), min=parseInt($('param-min').value);
+  if(temp!==20 || min!==3){
+    if(temp!==20){ toast('药液温度不对——照片发灰，显不出影像。老陈只认20℃那个数。'); }
+    else { toast('显影时间不对——影像抓不住。规程上写着：3分钟。'); }
+    return;
+  }
+  var need=WORDS[s.devIndex];
+  $('neg-img').style.background=NEG_BGS[s.devIndex];
+  $('negative').classList.add('developed');
+  if(s.collected.indexOf(need)<0){
+    /* 缺字：不推进，提示位置，让玩家去店里找 */
+    $('needle-word').textContent='（缺）';
+    toast('这张底片还是空的——字在：'+CHAR_HINTS[s.devIndex].where);
+    return;
+  }
+  $('needle-word').textContent=need;
+  maybeWeird(need,s.devIndex);
+  s.devIndex++; State.save(); updateProgress(); renderChem();
+  if(s.devIndex>=6){
+    btn.textContent='六张底片已全部显影';
+    btn.disabled=true;
+    toast('六个针尖字连成一句话：周梦回，放手吧');
+  } else {
+    btn.textContent='浸入下一张底片';
+  }
+}
+function updateProgress(){
+  $('dr-progress').textContent='已显影 '+State.data.devIndex+' / 6 张底片';
+  if(State.data.devIndex>=6 && State.data.gates.loop){ $('extra-neg').classList.add('show'); }
+  else { $('extra-neg').classList.remove('show'); }
+}
+/* 显影时穿插诡异字（仅显示，不影响集字）+ 显影盘人脸 */
+var WEIRD_WORDS=['救','别','留','他','你','还','来','走'];
+function maybeWeird(realWord,idx){
+  if(Math.random()<0.4){
+    setTimeout(function(){
+      if(State.data.devIndex!==idx||State.data.devStage!==1){ return; }
+      var w=WEIRD_WORDS[Math.floor(Math.random()*WEIRD_WORDS.length)];
+      $('needle-word').textContent=w;
+      if(Math.random()<0.5){ showTrayFace(); }
+      setTimeout(function(){
+        if(State.data.devIndex===idx&&State.data.devStage===1&&$('needle-word').textContent===w){
+          $('needle-word').textContent=realWord;
+        }
+      },1500);
+    },900);
+  }
+}
+function showTrayFace(){
+  var f=$('tray-face');
+  var open=State.data.gates.trap;
+  f.classList.add('show');
+  if(open){
+    /* 已读过手记：它知道你看得见，脸主动可点、在等你 */
+    f.style.pointerEvents='auto';
+    f.style.cursor='pointer';
+    var hint=$('tray-hint');
+    hint.textContent='……它知道，你看见了。';
+    hint.classList.add('show');
+    f.onclick=function(){
+      if(State.data.endings.indexOf('trap')<0){ State.data.endings.push('trap'); State.save(); }
+      go('ending-trap.html');
+    };
+  }
+  setTimeout(function(){
+    f.classList.remove('show');
+    f.style.pointerEvents='none';
+    f.onclick=null;
+    var h=$('tray-hint');
+    h.textContent='……那张脸，在看你。';
+    h.classList.remove('show');
+  },2600);
+}
+function tryDouble(){
+  if(!State.data.gates.double){
+    toast('你还不明白"重曝"意味着什么——先弄清它，再谈叠放。');
+    return;
+  }
+  if(State.data.collected.length<2){
+    toast('你手里还没有可叠放的底片，先集齐几枚针尖字。');
+    return;
+  }
+  if(State.data.endings.indexOf('double')<0){ State.data.endings.push('double'); State.save(); }
+  go('ending-double.html');
+}
+/* 走向暗房深处：可能鬼打墙（一次，概率更高），但最终仍到 final */
+function goFinal(){
+  if(!window._wallHit&&Math.random()<0.75){
+    window._wallHit=true;
+    var ov=document.createElement('div');
+    ov.className='forbidden-screen wall-screen';
+    var t=document.createElement('div');
+    t.className='forbidden-text'; t.textContent='……你又走回了这里。';
+    ov.appendChild(t);
+    document.body.appendChild(ov);
+    requestAnimationFrame(function(){ ov.classList.add('show'); });
+    setTimeout(function(){
+      ov.classList.remove('show');
+      setTimeout(function(){ ov.remove(); go('final.html'); },500);
+    },2600);
+  } else { go('final.html'); }
+}
+/* 红色安全灯随机闪烁 */
+function scheduleFlicker(){
+  setTimeout(function(){
+    document.body.classList.add('safelight-flicker');
+    setTimeout(function(){ document.body.classList.remove('safelight-flicker'); },1500);
+    scheduleFlicker();
+  },12000+Math.random()*12000);
+}
+$('dev-btn').addEventListener('click',developNext);
+$('double-btn').addEventListener('click',tryDouble);
+$('to-final-btn').addEventListener('click',goFinal);
+document.querySelectorAll('[data-chem]').forEach(function(b){
+  b.addEventListener('click',function(){ chemStep(b.getAttribute('data-chem')); });
+});
+$('extra-neg-btn').addEventListener('click',function(){
+  if(State.data.endings.indexOf('loop')<0){ State.data.endings.push('loop'); State.save(); }
+  go('ending-loop.html');
+});
+/* 暗房手记印章（真相之锁的第三样凭证） */
+function getSeal(){
+  if(collectToken('seal')){ toast('你收下了老陈的私章——"守"。这是进真相的凭证之一。'); }
+  else { toast('这枚章，你已经收下了。'); }
+}
+setupNeg();
+scheduleFlicker();
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>空镜头 · 潜影</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%238c1f1f'/><circle cx='50' cy='42' r='20' fill='%23f0e6d2'/><rect x='28' y='66' width='44' height='14' rx='3' fill='%23f0e6d2'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark">
+<div class="ending e-empty">
+  <div class="e-box">
+    <div class="e-title">空 镜 头</div>
+    <div class="e-sub">镜头里，最后一个人也走了</div>
+    <div class="e-text">
+      <p>照相馆拆了，相机和底片送进了博物馆。所有照片里的人，走的走，散的散。</p>
+      <p>有一天，工作人员取出那台海鸥4A，对着空墙按下了快门。</p>
+      <p>咔嚓。</p>
+      <p>洗出来的照片里，什么人也没有——只有一间空荡荡的老照相馆，红色安全灯亮着，显影盘里的水，滴滴答答。</p>
+      <p>看着照片的人忽然觉得，那台相机，好像也在看着他。</p>
+      <p>故事到这里，真的结束了。</p>
+      <p>——而你，又是从哪一张照片里，走进来的呢？</p>
+    </div>
+    <div class="e-word">空</div>
+    <div class="e-actions">
+      <button class="btn" onclick="replay()">重新来过</button>
+      <button class="btn btn-ghost" onclick="go('index.html')">回到前厅</button>
+    </div>
+  </div>
+</div>
+<script src="js/common.js"></script>
+<script>
+guardEnding('empty');
+function replay(){ State.reset(); go('index.html'); }
+</script>
+</body>
+</html>
